@@ -1,0 +1,27 @@
+    :root{
+      --orange: #FF5722;
+      --dark: #1E1E1E;
+      --light: #F5F5F5;
+      --green: #4CAF50;
+      --purple: #673AB7;
+    }
+    body { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: var(--light); color: var(--dark); }
+    .card-shadow { box-shadow: 0 6px 18px rgba(30,30,30,0.08); }
+    .hover-purple:hover { background: var(--purple) !important; }
+    .btn-primary { background: var(--orange); color: white; }
+    .btn-primary:hover { background: #e64a16; }
+    .btn-outline { border: 1px solid rgba(30,30,30,0.06); background: white; }
+    .accent-green { color: var(--green); }
+    .nav-blur { backdrop-filter: blur(6px); background: rgba(255,255,255,0.02); }
+    /* small UI tweaks */
+    .book-cover { min-width: 110px; height: 154px; object-fit: cover; border-radius: 8px; }
+    @media (min-width: 768px){
+      .hero-height { height: 72vh; }
+    }
+    @media (max-width: 767px){
+      .hero-height { height: 58vh; }
+    }
+    /* thin scrollbar for horizontal carousels */
+    .thin-scroll { scrollbar-width: thin; -ms-overflow-style: none; }
+    .thin-scroll::-webkit-scrollbar { height: 8px; }
+    .thin-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 999px; }
