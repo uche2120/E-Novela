@@ -26,7 +26,7 @@
           </div>
           <div class="hidden md:flex items-center ml-6 gap-4 text-sm text-slate-700">
             <a href="#home" class="hover:underline">Home</a>
-            <a href="#library" class="hover:underline">Library</a>
+            <a href="library.html" class="hover:underline">Library</a>
             <a href="#become" class="hover:underline">Become a Writer</a>
           </div>
         </div>
@@ -51,7 +51,7 @@
           </div>
 
           <!-- mobile menu -->
-          <button id="mobileMenuBtn" class="md:hidden p-2">
+          <button id="mobileMenuBtn" class="md:hidden p-2" aria-label="Open menu">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
             </svg>
@@ -60,6 +60,30 @@
       </nav>
     </div>
   </header>
+
+  <!-- Mobile menu backdrop + drawer -->
+  <div id="mobileBackdrop" class="mobile-menu-backdrop" tabindex="-1"></div>
+  <aside id="mobileMenu" class="mobile-menu" aria-hidden="true" role="dialog" aria-label="Mobile navigation">
+    <div class="flex items-center justify-between mb-4">
+      <div class="inline-flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-tr from-orange-400 to-orange-600 text-white font-bold">E</div>
+        <div class="text-lg font-semibold">E-Novela</div>
+      </div>
+      <button id="closeMobile" class="close-mobile" aria-label="Close menu">✕</button>
+    </div>
+
+    <nav>
+      <a href="index.html#home" class="mobile-link">Home</a>
+      <a href="library.html" class="mobile-link">Library</a>
+      <a href="index.html#become" class="mobile-link">Become a Writer</a>
+      <a href="mailto:info@enovela.com" class="mobile-link">Contact</a>
+    </nav>
+
+    <div class="mobile-cta">
+      <a href="#" class="btn-outline">Login</a>
+      <a href="#" class="btn-primary">Sign up</a>
+    </div>
+  </aside>
 
   <main id="home" class="pt-28">
 
@@ -484,9 +508,36 @@
     });
 
     // mobile menu button - simple
-    el('mobileMenuBtn').addEventListener('click', ()=>{
-      alert('Mobile menu — add navigation links here.');
-    });
+    // mobile menu toggle logic
+    const mobileMenuBtn = el('mobileMenuBtn');
+    const mobileMenu = el('mobileMenu');
+    const mobileBackdrop = el('mobileBackdrop');
+    const closeMobile = el('closeMobile');
+
+    function openMobileMenu(){
+      mobileMenu.classList.add('open');
+      mobileBackdrop.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileMenu(){
+      mobileMenu.classList.remove('open');
+      mobileBackdrop.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    mobileMenuBtn.addEventListener('click', openMobileMenu);
+    closeMobile.addEventListener('click', closeMobileMenu);
+    mobileBackdrop.addEventListener('click', closeMobileMenu);
+
+    // close when selecting any mobile link
+    document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', ()=>{
+      closeMobileMenu();
+    }));
+
+    // close on ESC
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMobileMenu(); });
 
     // basic search hook (non-functional placeholder)
     el('search').addEventListener('input', (e)=>{
