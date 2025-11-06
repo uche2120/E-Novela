@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Novela | Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --orange: #ff5722;
+      --dark: #1e1e1e;
+      --light: #f5f5f5;
+      --green: #4caf50;
+      --purple: #673ab7;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--orange);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      color: var(--orange);
+    }
+
+    .nav-btn {
+      background: var(--orange);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: var(--purple);
+    }
+
+    /* ===== SEARCH BAR ===== */
+    .search-section {
+      background: #fff;
+      padding: 1rem 5%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    }
+
+    .search-section input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .search-section select {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    /* ===== BOOK GRID ===== */
+    .book-section {
+      padding: 2rem 5%;
+    }
+
+    .book-section h2 {
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      color: var(--dark);
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .book-card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .book-card img {
+      width: 100%;
+      height: 270px;
+      object-fit: cover;
+    }
+
+    .book-info {
+      padding: 1rem;
+    }
+
+    .book-info h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+      color: var(--dark);
+    }
+
+    .book-info p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 0.3rem;
+    }
+
+    .book-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #777;
+      margin: 0.5rem 0;
+    }
+
+    .book-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .book-actions button {
+      flex: 1;
+      padding: 0.5rem 0.7rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .read-btn {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .details-btn {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .read-btn:hover { background: #e64a19; }
+    .details-btn:hover { background: #512da8; }
+
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .modal-content img {
+      width: 100px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content h3 { margin-bottom: 0.5rem; }
+
+    .modal-content button {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .buy-btn { background: var(--orange); }
+    .ad-btn { background: var(--purple); }
+
+    .buy-btn:hover { background: #e64a19; }
+    .ad-btn:hover { background: #512da8; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark);
+      color: #fff;
+      padding: 2rem 5%;
+      margin-top: 2rem;
+    }
+
+    footer .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    footer h4 {
+      margin-bottom: 0.8rem;
+      color: var(--orange);
+    }
+
+    footer a {
+      display: block;
+      color: #ddd;
+      text-decoration: none;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 1rem;
+      color: #aaa;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="navbar">
+      <div class="logo">E-Novela</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <!-- <a href="library.html" class="active">Library</a> -->
+        <a href="writer.html">Become a Writer</a>
+        <button class="nav-btn">Login / Signup</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SEARCH SECTION ===== -->
+  <section class="search-section">
+    <input type="text" id="searchInput" placeholder="Search by title or author..." />
+    <select id="genreFilter">
+      <option value="all">All</option>
+      <option value="Romance">Romance ❤️</option>
+      <option value="Action">Action ⚔️</option>
+      <option value="Horror">Horror 👻</option>
+      <option value="Fantasy">Fantasy 🧙</option>
+      <option value="Motivation">Motivation 🌟</option>
+    </select>
+  </section>
+
+  <!-- ===== BOOK GRID ===== -->
+  <section class="book-section">
+    <h2>📚 All Novels</h2>
+    <div class="book-grid" id="bookGrid">
+      <!-- JS will populate here -->
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h4>About</h4>
+        <p>E-Novela is your gateway to explore inspiring stories, discover writers, and read anytime.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a href="library.html">Library</a>
+        <a href="writer.html">Become a Writer</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: info@enovela.com</p>
+        <p>WhatsApp: +234 ***</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 E-Novela. All rights reserved.</div>
+  </footer>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal" id="bookModal">
+    <div class="modal-content">
+      <img src="" alt="Book Cover" id="modalCover" />
+      <h3 id="modalTitle"></h3>
+      <p id="modalAuthor"></p>
+      <button class="buy-btn">🪙 Buy to Read (₦2.00)</button>
+      <button class="ad-btn" id="watchAdBtn">🎥 Watch Ad (1 Minute) to Unlock</button>
+    </div>
+  </div>
+
+  <script>
+    const books = [
+      { title: "The Blood Pact", author: "Jane Doe", genre: "Action", cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=03f52bd9a5f0f4cfa3d5e0b4ee3a3fbe", views: "2.1k", likes: 400 },
+      { title: "Love in Lagos", author: "Mary John", genre: "Romance", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b0c69e85348d6f8d75b1b2b0adbb6f9", views: "3.4k", likes: 250 },
+      { title: "Haunted Night", author: "Kelvin Ray", genre: "Horror", cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=03f52bd9a5f0f4cfa3d5e0b4ee3a3fbe", views: "1.2k", likes: 180 },
+      { title: "Magic Realm", author: "Sophie Lee", genre: "Fantasy", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b0c69e85348d6f8d75b1b2b0adbb6f9", views: "2.9k", likes: 370 },
+      { title: "Rise & Shine", author: "Faith Uzoma", genre: "Motivation", cover: "https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6c2d2f6a3e2f4b3a6b5c4d3e2f1a0b9c", views: "4.8k", likes: 520 },
+    ];
+
+    const grid = document.getElementById('bookGrid');
+    const searchInput = document.getElementById('searchInput');
+    const genreFilter = document.getElementById('genreFilter');
+    const modal = document.getElementById('bookModal');
+    const modalCover = document.getElementById('modalCover');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalAuthor = document.getElementById('modalAuthor');
+    const watchAdBtn = document.getElementById('watchAdBtn');
+
+    function displayBooks(list) {
+      grid.innerHTML = '';
+      list.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.innerHTML = `
+          <img src="${book.cover}" alt="${book.title}" />
+          <div class="book-info">
+            <h3>${book.title}</h3>
+            <p>by ${book.author}</p>
+            <p><strong>${book.genre}</strong></p>
+            <div class="book-stats">
+              <span><i class="fa fa-eye"></i> ${book.views}</span>
+              <span><i class="fa fa-heart"></i> ${book.likes}</span>
+            </div>
+            <div class="book-actions">
+              <button class="read-btn" onclick="openModal('${book.cover}', '${book.title}', '${book.author}')">Read</button>
+              <button class="details-btn">Details</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    displayBooks(books);
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = books.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query));
+      displayBooks(filtered);
+    });
+
+    genreFilter.addEventListener('change', () => {
+      const genre = genreFilter.value;
+      const filtered = genre === 'all' ? books : books.filter(b => b.genre === genre);
+      displayBooks(filtered);
+    });
+
+    function openModal(cover, title, author) {
+      modal.style.display = 'flex';
+      modalCover.src = cover;
+      modalTitle.textContent = title;
+      modalAuthor.textContent = 'By ' + author;
+    }
+
+    modal.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+
+    watchAdBtn.addEventListener('click', () => {
+      watchAdBtn.textContent = '⏳ Watching Ad... 60s';
+      let time = 60;
+      const interval = setInterval(() => {
+        time--;
+        watchAdBtn.textContent = `⏳ Watching Ad... ${time}s`;
+        if (time <= 0) {
+          clearInterval(interval);
+          alert('✅ Ad watched! Book unlocked for 1 hour.');
+          modal.style.display = 'none';
+        }
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>
