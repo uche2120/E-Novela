@@ -58,6 +58,17 @@
       flex-wrap: wrap;
     }
 
+    .back-btn-header { background: var(--orange); color: #fff; border: none; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: 500; margin-right: 0.5rem; transition: background 0.3s; }
+    .back-btn-header:hover { background: #e64a19; }
+
+    /* coin display */
+    .wallet {
+      display:flex; align-items:center; gap:0.75rem; background:transparent; color:var(--dark); font-weight:600;
+    }
+    .wallet .coins {
+      background: var(--light); padding:0.4rem 0.6rem; border-radius:999px; border:1px solid rgba(0,0,0,0.06);
+    }
+
     .nav-links a {
       text-decoration: none;
       color: var(--dark);
@@ -128,7 +139,7 @@
 
     .book-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1.5rem;
     }
 
@@ -207,24 +218,37 @@
     .details-btn:hover { background: #512da8; }
 
     /* ===== MODAL ===== */
+    /* Glass-style modal */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
       z-index: 2000;
+      padding: 1rem;
+      transition: opacity 220ms ease, visibility 220ms ease;
     }
 
+    .modal.show { display:flex; }
+
     .modal-content {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2rem;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+      border-radius: 14px;
+      padding: 1.25rem;
+      width: 100%;
+      max-width: 520px;
+      text-align: left;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      transform: translateY(-8px);
+      animation: modalIn 260ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    @keyframes modalIn {
+      from { opacity:0; transform: translateY(6px) scale(.995); }
+      to { opacity:1; transform: translateY(0) scale(1); }
     }
 
     .modal-content img {
@@ -237,15 +261,10 @@
 
     .modal-content h3 { margin-bottom: 0.5rem; }
 
+    .modal-content .actions { display:flex; gap:0.6rem; margin-top:1rem; }
+
     .modal-content button {
-      margin-top: 1rem;
-      width: 100%;
-      padding: 0.6rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      color: #fff;
-      font-weight: 500;
+      padding: 0.6rem 0.8rem; border-radius:8px; border:none; cursor:pointer; font-weight:600; color:#fff; flex:1;
     }
 
     .buy-btn { background: var(--orange); }
@@ -253,6 +272,14 @@
 
     .buy-btn:hover { background: #e64a19; }
     .ad-btn:hover { background: #512da8; }
+
+    .btn-cancel { background: #777; }
+
+    /* small responsive tweaks for modals */
+    @media (max-width:520px){
+      .modal-content{ padding:1rem; max-width:420px }
+      .modal-content img{ width:86px; height:126px }
+    }
 
     /* ===== FOOTER ===== */
     footer {
@@ -298,12 +325,60 @@
       .navbar {
         flex-direction: column;
         align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.8rem 4%;
       }
+
+      .logo { font-size: 1.2rem; }
 
       .nav-links {
         width: 100%;
         justify-content: space-between;
+        gap: 0.8rem;
+        flex-wrap: wrap;
       }
+
+      .nav-links a { font-size: 0.9rem; }
+      .nav-btn { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      .back-btn-header { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+      .search-section { padding: 0.8rem 4%; gap: 0.6rem; flex-direction: column; }
+      .search-section input { width: 100%; min-width: unset; padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+      .search-section select { width: 100%; padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+      .book-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; }
+      .book-section { padding: 1.5rem 4%; }
+      .book-section h2 { font-size: 1.3rem; }
+      .book-card img { height: 200px; }
+      .book-info { padding: 0.7rem; }
+      .book-info h3 { font-size: 0.95rem; }
+      .book-info p { font-size: 0.85rem; }
+      .book-actions button { padding: 0.4rem 0.5rem; font-size: 0.8rem; }
+      footer { padding: 1.5rem 4%; }
+      .modal-content { padding: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .navbar { padding: 0.8rem 3%; gap: 0.3rem; }
+      .logo { font-size: 1rem; }
+      .nav-links { gap: 0.5rem; }
+      .nav-links a { font-size: 0.8rem; }
+      .nav-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+      .back-btn-header { padding: 0.3rem 0.5rem; font-size: 0.75rem; }
+      .search-section { padding: 0.6rem 3%; gap: 0.5rem; }
+      .search-section input { font-size: 0.85rem; }
+      .search-section select { font-size: 0.85rem; }
+      .book-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .book-section { padding: 1rem 3%; }
+      .book-section h2 { font-size: 1.1rem; }
+      .book-card img { height: 160px; }
+      .book-info { padding: 0.6rem; }
+      .book-info h3 { font-size: 0.9rem; }
+      .book-info p { font-size: 0.8rem; }
+      .book-stats { font-size: 0.75rem; }
+      .book-actions button { padding: 0.35rem 0.4rem; font-size: 0.75rem; }
+      footer { padding: 1rem 3%; }
+      footer .footer-grid { gap: 1rem; }
+      .modal-content { max-width: 90vw; padding: 0.8rem; }
+      .modal-content img { width: 80px; height: 120px; }
     }
   </style>
 </head>
@@ -312,6 +387,7 @@
   <!-- ===== HEADER ===== -->
   <header>
     <div class="navbar">
+      <button class="back-btn-header" onclick="window.location.href='index.html'" title="Go Home">← Home</button>
       <div class="logo">E-Novela</div>
       <div class="nav-links">
         <a href="index.html">Home</a>
@@ -365,44 +441,131 @@
     <div class="footer-bottom">© 2025 E-Novela. All rights reserved.</div>
   </footer>
 
-  <!-- ===== MODAL ===== -->
-  <div class="modal" id="bookModal">
+  <!-- ===== COIN & PREVIEW MODALS ===== -->
+  <div class="modal" id="previewModal" aria-hidden="true">
     <div class="modal-content">
-      <img src="" alt="Book Cover" id="modalCover" />
-      <h3 id="modalTitle"></h3>
-      <p id="modalAuthor"></p>
-      <button class="buy-btn">🪙 Buy to Read (₦2.00)</button>
-      <button class="ad-btn" id="watchAdBtn">🎥 Watch Ad (1 Minute) to Unlock</button>
+      <div style="display:flex; gap:1rem; align-items:flex-start;">
+        <img src="" alt="Book Cover" id="previewCover" />
+        <div style="flex:1">
+          <h3 id="previewTitle"></h3>
+          <p id="previewAuthor" style="color:#666; margin-top:4px"></p>
+          <p id="previewGenre" style="margin-top:6px; font-size:0.95rem; color:#444"></p>
+        </div>
+      </div>
+      <hr style="margin:0.85rem 0; border:none; border-top:1px solid rgba(0,0,0,0.06)" />
+      <div id="previewText" style="max-height:220px; overflow:auto; color:#333; line-height:1.6;">Loading preview…</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.85rem; gap:0.6rem">
+        <div style="font-weight:700; color:var(--dark)">Price: <span id="previewPrice" style="color:var(--orange)">50</span> coins</div>
+        <div style="display:flex; gap:0.5rem; width:55%">
+          <button class="ad-btn" id="previewWatchAd">🎥 Watch 1-min Ad to Unlock</button>
+          <button class="buy-btn" id="previewPay">🪙 Pay With Coins</button>
+          <button class="btn-cancel" id="previewCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="buyCoinsModal" aria-hidden="true">
+    <div class="modal-content">
+      <h3>Buy Coins</h3>
+      <p style="color:#555;">Choose a package</p>
+      <div style="display:flex; gap:0.6rem; margin-top:0.6rem; flex-wrap:wrap">
+        <label style="flex:1; border-radius:10px; padding:0.6rem; background:#fff; border:1px solid rgba(0,0,0,0.06); cursor:pointer;">
+          <input type="radio" name="coinPackage" value="100" style="margin-right:8px"> 100 coins — ₦300
+        </label>
+        <label style="flex:1; border-radius:10px; padding:0.6rem; background:#fff; border:1px solid rgba(0,0,0,0.06); cursor:pointer;">
+          <input type="radio" name="coinPackage" value="500" style="margin-right:8px"> 500 coins — ₦1,000
+        </label>
+        <label style="flex:1; border-radius:10px; padding:0.6rem; background:#fff; border:1px solid rgba(0,0,0,0.06); cursor:pointer;">
+          <input type="radio" name="coinPackage" value="1000" style="margin-right:8px"> 1,000 coins — ₦1,800
+        </label>
+      </div>
+      <div class="actions" style="margin-top:0.9rem">
+        <button class="buy-btn" id="proceedPayment">Proceed to Payment</button>
+        <button class="btn-cancel" id="closeBuyCoins">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="adModal" aria-hidden="true">
+    <div class="modal-content" style="text-align:center">
+      <h3 id="adTitle">Ad Playing</h3>
+      <p id="adTimer">Ad Playing: 60s</p>
     </div>
   </div>
 
   <script>
+    // --- Data & Helpers ---
     const books = [
-      { title: "The Blood Pact", author: "Jane Doe", genre: "Action", cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=03f52bd9a5f0f4cfa3d5e0b4ee3a3fbe", views: "2.1k", likes: 400 },
-      { title: "Love in Lagos", author: "Mary John", genre: "Romance", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b0c69e85348d6f8d75b1b2b0adbb6f9", views: "3.4k", likes: 250 },
-      { title: "Haunted Night", author: "Kelvin Ray", genre: "Horror", cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=03f52bd9a5f0f4cfa3d5e0b4ee3a3fbe", views: "1.2k", likes: 180 },
-      { title: "Magic Realm", author: "Sophie Lee", genre: "Fantasy", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b0c69e85348d6f8d75b1b2b0adbb6f9", views: "2.9k", likes: 370 },
-      { title: "Rise & Shine", author: "Faith Uzoma", genre: "Motivation", cover: "https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6c2d2f6a3e2f4b3a6b5c4d3e2f1a0b9c", views: "4.8k", likes: 520 },
+      { title: "The Blood Pact", author: "Jane Doe", genre: "Action", cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=03f52bd9a5f0f4cfa3d5e0b4ee3a3fbe", views: "2.1k", likes: 400, price: 50, preview: `<p>It began with a whisper in the alleys — deals written with blood and sealed by promises no one could keep. Lagos was changing; loyalty sold for a coin and honor traded like old books.</p><p>Amid the shadows, two friends made a pact that would come to haunt their children and their children's children.</p>` },
+      { title: "Love in Lagos", author: "Mary John", genre: "Romance", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b0c69e85348d6f8d75b1b2b0adbb6f9", views: "3.4k", likes: 250, price: 30, preview: `<p>She sold akara on the corner where broken umbrellas met the sun. He came every morning in a faded blue shirt and a smile that made the bread sweeter.</p><p>When their cups of tea collided, it felt like the world had paused to watch two strangers begin a conversation they didn't know they'd keep.</p>` },
+      { title: "Haunted Night", author: "Kelvin Ray", genre: "Horror", cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=03f52bd9a5f0f4cfa3d5e0b4ee3a3fbe", views: "1.2k", likes: 180, price: 40, preview: `<p>They said the house remembered. At midnight, the walls folded memories like hands closing over a child's face.</p><p>Those who entered never left with the same reflection in the mirror.</p>` },
+      { title: "Magic Realm", author: "Sophie Lee", genre: "Fantasy", cover: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b0c69e85348d6f8d75b1b2b0adbb6f9", views: "2.9k", likes: 370, price: 60, preview: `<p>The map had no borders and the oceans hummed lullabies. Children grew feathers and kings became fishermen overnight.</p><p>Magic was a currency here, and it could be spent for love or for war.</p>` },
+      { title: "Rise & Shine", author: "Faith Uzoma", genre: "Motivation", cover: "https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6c2d2f6a3e2f4b3a6b5c4d3e2f1a0b9c", views: "4.8k", likes: 520, price: 20, preview: `<p>Every morning she woke before the sun and wrote a single sentence: I will do it today.</p><p>Decisions are small steps repeated, and repetition builds a new life.</p>` },
     ];
 
+    // localStorage keys
+    const COIN_KEY = 'enovela_coins';
+    const UNLOCK_KEY = 'enovela_unlocked';
+
+    // DOM
     const grid = document.getElementById('bookGrid');
     const searchInput = document.getElementById('searchInput');
     const genreFilter = document.getElementById('genreFilter');
-    const modal = document.getElementById('bookModal');
-    const modalCover = document.getElementById('modalCover');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalAuthor = document.getElementById('modalAuthor');
-    const watchAdBtn = document.getElementById('watchAdBtn');
+    const walletNode = document.querySelector('.nav-links');
 
-    function displayBooks(list) {
+    // create wallet display in header (top-right)
+    const walletEl = document.createElement('div');
+    walletEl.className = 'wallet';
+    walletEl.innerHTML = `<div class="coins">🪙 <span id="coinCount">0</span></div><button class="nav-btn" id="buyCoinsBtn" style="background:var(--purple);">Buy Coins</button>`;
+    walletNode.appendChild(walletEl);
+
+    // modal & controls
+    const previewModal = document.getElementById('previewModal');
+    const previewCover = document.getElementById('previewCover');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewAuthor = document.getElementById('previewAuthor');
+    const previewText = document.getElementById('previewText');
+    const previewPrice = document.getElementById('previewPrice');
+    const previewWatchAd = document.getElementById('previewWatchAd');
+    const previewPay = document.getElementById('previewPay');
+    const previewCancel = document.getElementById('previewCancel');
+
+    const buyCoinsModal = document.getElementById('buyCoinsModal');
+    const buyCoinsBtn = document.getElementById('buyCoinsBtn');
+    const proceedPayment = document.getElementById('proceedPayment');
+    const closeBuyCoins = document.getElementById('closeBuyCoins');
+
+    const adModal = document.getElementById('adModal');
+    const adTimer = document.getElementById('adTimer');
+
+    let currentPreview = null;
+
+    // --- coin helpers ---
+    function getCoins(){ return Number(localStorage.getItem(COIN_KEY) || 0); }
+    function setCoins(n){ localStorage.setItem(COIN_KEY, String(n)); updateCoinDisplay(); }
+    function updateCoinDisplay(){ document.getElementById('coinCount').textContent = getCoins(); }
+    function getUnlocked(){ try{ return JSON.parse(localStorage.getItem(UNLOCK_KEY) || '[]'); } catch(e){ return []; } }
+    function setUnlocked(arr){ localStorage.setItem(UNLOCK_KEY, JSON.stringify(arr)); }
+    function unlockBook(slug){ const u = getUnlocked(); if(!u.includes(slug)){ u.push(slug); setUnlocked(u); } }
+
+    // slug helper
+    function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+
+    // render grid
+    function displayBooks(list){
       grid.innerHTML = '';
+      const unlocked = getUnlocked();
       list.forEach(book => {
+        const isPaid = typeof book.price === 'number' && book.price > 0;
+        const slug = slugify(book.title);
+        const locked = isPaid && !unlocked.includes(slug);
         const card = document.createElement('div');
         card.className = 'book-card';
         card.innerHTML = `
           <img src="${book.cover}" alt="${book.title}" />
           <div class="book-info">
-            <h3>${book.title}</h3>
+            <h3>${book.title} ${locked? '<span title="Locked" style="color:var(--orange); font-size:0.85rem;">🔒</span>':''}</h3>
             <p>by ${book.author}</p>
             <p><strong>${book.genre}</strong></p>
             <div class="book-stats">
@@ -410,8 +573,8 @@
               <span><i class="fa fa-heart"></i> ${book.likes}</span>
             </div>
             <div class="book-actions">
-              <button class="read-btn" onclick="openModal('${book.cover}', '${book.title}', '${book.author}')">Read</button>
-              <button class="details-btn">Details</button>
+              <button class="read-btn" onclick="openPreview('${slug}')">Preview Story</button>
+              <button class="details-btn" onclick="goToDetail('${slug}')">Details</button>
             </div>
           </div>
         `;
@@ -419,44 +582,106 @@
       });
     }
 
+    // initial
+    updateCoinDisplay();
     displayBooks(books);
 
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
-      const filtered = books.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query));
+    // search & filter
+    searchInput.addEventListener('input', ()=>{
+      const q = searchInput.value.toLowerCase();
+      const filtered = books.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q));
       displayBooks(filtered);
     });
 
-    genreFilter.addEventListener('change', () => {
-      const genre = genreFilter.value;
-      const filtered = genre === 'all' ? books : books.filter(b => b.genre === genre);
+    genreFilter.addEventListener('change', ()=>{
+      const g = genreFilter.value;
+      const filtered = g === 'all' ? books : books.filter(b => b.genre === g);
       displayBooks(filtered);
     });
 
-    function openModal(cover, title, author) {
-      modal.style.display = 'flex';
-      modalCover.src = cover;
-      modalTitle.textContent = title;
-      modalAuthor.textContent = 'By ' + author;
-    }
+    // open preview (exposed globally so inline onclick works)
+    window.openPreview = function(slug){
+      const book = books.find(b => slugify(b.title) === slug);
+      if(!book) return;
+      currentPreview = book;
+      previewCover.src = book.cover;
+      previewTitle.textContent = book.title;
+      previewAuthor.textContent = 'By ' + book.author;
+      previewGenre.textContent = book.genre;
+      previewText.innerHTML = book.preview;
+      previewPrice.textContent = book.price || 0;
+      previewModal.classList.add('show');
+      previewModal.setAttribute('aria-hidden','false');
+    };
 
-    modal.addEventListener('click', e => {
-      if (e.target === modal) modal.style.display = 'none';
+    // close preview
+    previewCancel.addEventListener('click', ()=>{ previewModal.classList.remove('show'); previewModal.setAttribute('aria-hidden','true'); currentPreview = null; });
+    previewModal.addEventListener('click', e=>{ if(e.target===previewModal){ previewModal.classList.remove('show'); currentPreview = null; }});
+
+    // Buy coins modal
+    buyCoinsBtn.addEventListener('click', ()=>{ buyCoinsModal.classList.add('show'); buyCoinsModal.setAttribute('aria-hidden','false'); });
+    closeBuyCoins.addEventListener('click', ()=>{ buyCoinsModal.classList.remove('show'); buyCoinsModal.setAttribute('aria-hidden','true'); });
+
+    proceedPayment.addEventListener('click', ()=>{
+      const pkg = document.querySelector('input[name="coinPackage"]:checked');
+      if(!pkg){ alert('Please select a package.'); return; }
+      const amount = Number(pkg.value);
+      // simulate payment success
+      if(confirm(`Proceed to pay for ${amount} coins?`)){
+        const current = getCoins();
+        setCoins(current + amount);
+        alert('Payment successful — coins added to your wallet.');
+        buyCoinsModal.classList.remove('show');
+      }
     });
 
-    watchAdBtn.addEventListener('click', () => {
-      watchAdBtn.textContent = '⏳ Watching Ad... 60s';
-      let time = 60;
-      const interval = setInterval(() => {
-        time--;
-        watchAdBtn.textContent = `⏳ Watching Ad... ${time}s`;
-        if (time <= 0) {
-          clearInterval(interval);
-          alert('✅ Ad watched! Book unlocked for 1 hour.');
-          modal.style.display = 'none';
+    // preview actions: pay with coins
+    previewPay.addEventListener('click', ()=>{
+      if(!currentPreview) return;
+      const price = currentPreview.price || 0;
+      const coins = getCoins();
+      if(coins >= price){
+        if(confirm(`Pay ${price} coins to unlock?`)){
+          setCoins(coins - price);
+          const slug = slugify(currentPreview.title);
+          unlockBook(slug);
+          previewModal.classList.remove('show');
+          // redirect to detail page
+          window.location.href = `book-detail.html?book=${encodeURIComponent(slug)}`;
         }
+      } else {
+        alert('Not enough coins — buy more');
+      }
+    });
+
+    // preview actions: watch ad to unlock
+    previewWatchAd.addEventListener('click', ()=>{
+      if(!currentPreview) return;
+      previewModal.classList.remove('show');
+      adModal.classList.add('show');
+      adModal.setAttribute('aria-hidden','false');
+      let t = 60;
+      adTimer.textContent = `Ad Playing: ${t}s`;
+      const interval = setInterval(()=>{
+        t--; adTimer.textContent = `Ad Playing: ${t}s`;
+        if(t <= 0){ clearInterval(interval); adModal.classList.remove('show'); const slug = slugify(currentPreview.title); unlockBook(slug); // redirect
+          window.location.href = `book-detail.html?book=${encodeURIComponent(slug)}`; }
       }, 1000);
     });
+
+    // clicking outside modals closes them
+    buyCoinsModal.addEventListener('click', e=>{ if(e.target === buyCoinsModal) buyCoinsModal.classList.remove('show'); });
+    adModal.addEventListener('click', e=>{ if(e.target === adModal) adModal.classList.remove('show'); });
+
+    // details button — go to book-detail (if locked, detail page will prompt or show locked state)
+    window.goToDetail = function(slug){ window.location.href = `book-detail.html?book=${encodeURIComponent(slug)}`; };
+
+    // ensure coin count visible at load
+    updateCoinDisplay();
+
+    // Attach buy coins btn in header (defensive: element should exist)
+    const headerBuy = document.getElementById('buyCoinsBtn');
+    headerBuy && headerBuy.addEventListener('click', ()=>{ buyCoinsModal.classList.add('show'); });
   </script>
 
 </body>

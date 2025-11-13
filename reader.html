@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Novela | Reader</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange: #FF5722;
+    --dark: #1E1E1E;
+    --light: #F5F5F5;
+    --green: #4CAF50;
+    --purple: #673AB7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{font-family:'Poppins',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+  body{overflow-x:hidden;}
+
+  /* ===== HEADER ===== */
+  header.reader-header{
+    position:sticky;top:0;z-index:1000;background:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 5%;box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  }
+  .back-btn,.settings-btn{
+    background:var(--orange);border:none;color:white;
+    padding:8px 14px;border-radius:8px;cursor:pointer;
+    font-weight:600;transition:background 0.3s, transform 0.2s;
+  }
+  .back-btn:hover,.settings-btn:hover{background:#e64a19;transform:scale(1.05);}
+  .book-title-header{
+    font-weight:600;font-size:1.1rem;text-align:center;flex:1;margin:0 12px;color:var(--dark);
+    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  }
+  .coin-balance{font-weight:500;color:var(--dark);font-size:0.9rem;}
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar-container{
+    position:sticky;top:60px;height:4px;background:#ddd;border-radius:2px;margin-bottom:10px;width:100%;
+  }
+  .progress-bar{height:100%;width:0%;background:var(--orange);border-radius:2px;transition:width 0.25s linear;}
+
+  /* ===== READING AREA ===== */
+  .reader-container{
+    max-width:900px;margin:20px auto;padding:24px;border-radius:14px;background:#fff;
+    box-shadow:0 6px 18px rgba(30,30,30,0.06);min-height:70vh;
+    line-height:1.9;font-size:1.05rem;overflow-y:auto;
+    transition:background 0.3s,color 0.3s;
+  }
+  .reader-container.dark{background:#1E1E1E;color:#F5F5F5;}
+  .reader-container.sepia{background:#f4ecd8;color:#333;}
+
+  /* ===== SETTINGS PANEL ===== */
+  .settings-panel{
+    position:fixed;top:70px;right:20px;background:white;padding:14px;border-radius:12px;
+    box-shadow:0 6px 18px rgba(30,30,30,0.12);display:none;z-index:1100;width:220px;
+  }
+  .settings-panel label{display:block;margin:6px 0;font-weight:600;}
+  .settings-panel button{
+    margin:5px 4px;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;
+    background:var(--purple);color:white;font-size:0.85rem;transition:background 0.3s;
+  }
+  .settings-panel button:hover{background:#5e35b1;}
+
+  /* ===== ACTION BAR ===== */
+  .action-bar{
+    position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+    display:flex;gap:12px;background:white;padding:10px 14px;border-radius:14px;
+    box-shadow:0 6px 18px rgba(30,30,30,0.12);z-index:999;flex-wrap:wrap;justify-content:center;
+  }
+  .action-bar button{
+    padding:8px 12px;border:none;border-radius:8px;cursor:pointer;
+    font-weight:500;color:white;transition:transform 0.2s;
+  }
+  .action-bar button:hover{transform:scale(1.05);}
+  .bookmark{background:var(--green);}
+  .exit{background:var(--orange);}
+  .action-bar button:not(.bookmark):not(.exit){background:var(--purple);}
+
+  /* ===== AD OVERLAY ===== */
+  .ad-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.85);color:white;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    font-size:1.2rem;text-align:center;z-index:2000;padding:20px;
+  }
+  .ad-overlay button{
+    margin-top:14px;padding:10px 20px;border:none;border-radius:8px;
+    cursor:pointer;background:var(--green);color:white;font-weight:600;font-size:1rem;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:1024px){
+    .reader-container{padding:20px;font-size:1rem;}
+    header.reader-header{padding:10px 4%;}
+  }
+  @media(max-width:768px){
+    .reader-container{padding:16px;font-size:0.95rem;}
+    header.reader-header{padding:8px 3%;flex-wrap:wrap;}
+    .book-title-header{font-size:1rem;margin-top:6px;width:100%;}
+    .back-btn,.settings-btn{padding:6px 12px;font-size:0.9rem;}
+    .action-bar{gap:8px;padding:8px 12px;bottom:10px;}
+    .action-bar button{padding:6px 10px;font-size:0.9rem;}
+  }
+  @media(max-width:480px){
+    .reader-container{font-size:0.9rem;padding:12px;}
+    header.reader-header{padding:6px 2%;flex-wrap:wrap;gap:4px;}
+    .book-title-header{font-size:0.85rem;}
+    .coin-balance{font-size:0.8rem;}
+    .back-btn,.settings-btn{padding:5px 9px;font-size:0.8rem;}
+    .action-bar{gap:5px;padding:6px 8px;}
+    .action-bar button{padding:5px 8px;font-size:0.75rem;}
+    .settings-panel{top:60px;right:10px;width:180px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="reader-header">
+  <button class="back-btn" onclick="goBack()">← Back</button>
+  <div class="book-title-header" id="bookTitleHeader">The Lost Kingdom</div>
+  <div class="coin-balance" id="coinBalance">Coins: 0</div>
+  <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+</header>
+
+<!-- SETTINGS PANEL -->
+<div class="settings-panel" id="settingsPanel">
+  <label>Font Size</label>
+  <button onclick="setFontSize('small')">Small</button>
+  <button onclick="setFontSize('medium')">Medium</button>
+  <button onclick="setFontSize('large')">Large</button>
+  <label>Background</label>
+  <button onclick="setBG('light')">Light</button>
+  <button onclick="setBG('dark')">Dark</button>
+  <button onclick="setBG('sepia')">Sepia</button>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- READING AREA -->
+<main class="reader-container" id="reader">
+  <h2>Chapter 1: The Exile</h2>
+  <p>
+    In a world where gods once walked the earth and kings rose from the blood of heroes, the Last Heir returns from exile. Betrayed by lords, hunted by an immortal order, and guided by a mysterious lantern that remembers the names of the lost, he must gather allies in distant cities, reclaim the throne, and decide who is worth sparing.
+  </p>
+  <p>
+    Chapters blend political intrigue, epic battles, and magical mysteries. Each decision has consequences, alliances are fragile, and only the cunning will survive the shadows.
+  </p>
+  <p>...[More chapters and story content here]...</p>
+</main>
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <button class="bookmark" onclick="bookmarkProgress()">🔖 Bookmark</button>
+  <button onclick="prevChapter()">← Prev</button>
+  <button onclick="nextChapter()">Next →</button>
+  <button onclick="addFavorite()">❤️ Fav</button>
+  <button class="exit" onclick="goBack()">Exit</button>
+</div>
+
+<!-- AD OVERLAY -->
+<div class="ad-overlay" id="adOverlay" style="display:none;">
+  <div>⏳ Watch Ad to Unlock Reading: <span id="adCountdown">60</span>s</div>
+</div>
+
+<script>
+const reader=document.getElementById('reader'),
+progressBar=document.getElementById('progressBar'),
+settingsPanel=document.getElementById('settingsPanel'),
+adOverlay=document.getElementById('adOverlay'),
+adCountdownEl=document.getElementById('adCountdown');
+
+// Back button with query param support
+function goBack(){
+  const urlParams=new URLSearchParams(location.search);
+  const slug=urlParams.get('book');
+  if(slug) location.href=`book-detail.html?book=${encodeURIComponent(slug)}`;
+  else if(history.length>1) history.back();
+  else location.href='book-detail.html';
+}
+
+// Get book slug from URL or fallback
+function getQueryParam(name){const p=new URLSearchParams(location.search);return p.get(name);}
+function slugify(s){return(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
+const urlSlug=getQueryParam('book');
+const bookSlug=urlSlug||slugify(document.getElementById('bookTitleHeader').textContent);
+
+// Update header coin balance
+const COIN_KEY='enovela_coins';
+function getCoins(){return Number(localStorage.getItem(COIN_KEY)||0);}
+function updateCoinUI(){const el=document.getElementById('coinBalance');if(el) el.textContent=`Coins: ${getCoins()}`;}
+updateCoinUI();
+
+function toggleSettings(){settingsPanel.style.display=settingsPanel.style.display==='block'?'none':'block';}
+function setFontSize(size){
+  reader.style.fontSize=size==='small'?'16px':size==='medium'?'18px':'20px';
+}
+function setBG(mode){
+  reader.classList.remove('dark','sepia');
+  if(mode==='dark')reader.classList.add('dark');
+  else if(mode==='sepia')reader.classList.add('sepia');
+}
+
+reader.addEventListener('scroll',()=>{
+  const percent=(reader.scrollTop/(reader.scrollHeight-reader.clientHeight))*100;
+  progressBar.style.width=percent+'%';
+  localStorage.setItem('readingProgress',percent);
+});
+if(localStorage.getItem('readingProgress')) progressBar.style.width=localStorage.getItem('readingProgress')+'%';
+
+function bookmarkProgress(){alert('✅ Progress bookmarked (simulated)');}
+function addFavorite(){alert('💚 Added to Favorites (simulated)');}
+function nextChapter(){alert('➡️ Next chapter (simulated)');}
+function prevChapter(){alert('⬅️ Previous chapter (simulated)');}
+
+const UNLOCK_KEY='enovela_unlocked';
+function getUnlocked(){try{return JSON.parse(localStorage.getItem(UNLOCK_KEY)||'[]');}catch(e){return[];}}
+function unlockBook(s){const u=getUnlocked();if(!u.includes(s)){u.push(s);localStorage.setItem(UNLOCK_KEY,JSON.stringify(u));}}
+(function handleAdOverlay(){
+  const unlocked=getUnlocked(),isUnlocked=unlocked.includes(bookSlug);
+  if(isUnlocked){adOverlay.style.display='none';reader.style.overflow='auto';return;}
+  let adTime=60;
+  adOverlay.style.display='flex';reader.style.overflow='hidden';adCountdownEl.textContent=adTime;
+  const interval=setInterval(()=>{
+    adTime--;adCountdownEl.textContent=adTime;
+    if(adTime<=0){clearInterval(interval);unlockBook(bookSlug);adOverlay.style.display='none';reader.style.overflow='auto';}
+  },1000);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>E-Novela — Book Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --orange: #FF5722;
+      --dark: #1E1E1E;
+      --light: #F5F5F5;
+      --green: #4CAF50;
+      --purple: #673AB7;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:var(--light);
+      color:var(--dark);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 5%;
+      background:#fff;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+      position:sticky;top:0;z-index:1000;
+    }
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.2rem;color:var(--orange);}
+    .logo-mark{
+      width:40px;height:40px;border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#ff7043,#ff5722);
+      color:#fff;font-weight:700;
+    }
+    #navLinks{display:flex;align-items:center;gap:18px;}
+    #navLinks a{text-decoration:none;color:var(--dark);font-weight:500;}
+    #navLinks a.active{color:var(--orange);}
+    .login-btn{padding:8px 14px;border-radius:10px;background:var(--orange);color:white;border:none;cursor:pointer;font-weight:600;}
+    .menu-icon{display:none;font-size:24px;background:none;border:none;cursor:pointer;}
+
+    /* ===== BOOK HEADER ===== */
+    .book-header{
+      max-width:1200px;margin:30px auto;padding:0 5%;
+      display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;
+    }
+    .book-cover-box img{
+      width:100%;max-width:260px;border-radius:12px;
+      box-shadow:0 8px 30px rgba(30,30,30,0.12);
+    }
+    .book-details{flex:1;min-width:260px;}
+    .book-title{font-size:1.8rem;font-weight:700;margin-bottom:6px;}
+    .author{color:#555;margin-bottom:12px;font-weight:500;}
+    .details-info{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+    .pill{
+      background:#fff;padding:8px 12px;border-radius:999px;
+      box-shadow:0 6px 18px rgba(30,30,30,0.06);
+      font-size:0.9rem;
+    }
+    .unlock-banner{
+      margin-top:10px;display:flex;gap:0.6rem;align-items:center;font-weight:600;flex-wrap:wrap;
+    }
+    .unlock-banner .badge,
+    .unlock-banner .locked-badge{
+      padding:6px 10px;border-radius:999px;color:#fff;font-weight:700;
+    }
+    .unlock-banner.unlocked .badge{background:var(--green);}
+    .unlock-banner.locked .locked-badge{background:var(--orange);}
+
+    /* ===== DESCRIPTION ===== */
+    .description-section{max-width:1200px;margin:20px auto;padding:0 5%;}
+    .desc-box{
+      background:#fff;border-radius:12px;padding:18px;
+      box-shadow:0 6px 20px rgba(30,30,30,0.06);
+      overflow:auto;line-height:1.7;
+    }
+    .desc-box.collapsed{max-height:260px;}
+    .show-more{margin-top:8px;display:block;background:none;border:none;color:var(--orange);font-weight:600;cursor:pointer;}
+
+    /* ===== ACTION BUTTONS ===== */
+    .action-buttons{
+      max-width:1200px;margin:18px auto;padding:0 5% 28px;
+      display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start;
+    }
+    .btn{
+      padding:12px 18px;border-radius:10px;font-weight:600;border:none;cursor:pointer;
+      min-width:160px;transition:transform .15s ease,box-shadow .15s ease;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+    .btn:active{transform:translateY(0);}
+    .btn-start{background:var(--orange);color:white;}
+    .btn-fav{background:transparent;color:var(--purple);border:2px solid var(--purple);}
+    .btn-download{background:#e0e0e0;color:#777;cursor:not-allowed;}
+
+    /* ===== AUTHOR BOX ===== */
+    .author-section{max-width:1200px;margin:0 auto 28px;padding:0 5%;}
+    .author-card{
+      background:#fff;border-radius:12px;padding:18px;
+      display:flex;gap:18px;align-items:center;
+      box-shadow:0 6px 18px rgba(30,30,30,0.06);
+      flex-wrap:wrap;
+    }
+    .author-avatar{
+      width:84px;height:84px;background:linear-gradient(135deg,#ffd2c4,#ffb399);
+      border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-weight:700;
+    }
+    .author-meta h3{margin-bottom:6px;}
+    .author-meta p{color:#555;margin-bottom:6px;font-size:0.95rem;}
+    .author-btn{
+      padding:9px 14px;border-radius:10px;background:var(--orange);
+      color:white;border:none;font-weight:600;cursor:pointer;
+    }
+
+    /* ===== RELATED BOOKS ===== */
+    .related-section{max-width:1200px;margin:0 auto 48px;padding:0 5%;}
+    .related-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:16px;margin-top:12px;
+    }
+    .related-card{
+      background:#fff;border-radius:12px;padding:10px;text-align:center;
+      box-shadow:0 8px 30px rgba(30,30,30,0.06);
+      display:flex;flex-direction:column;gap:10px;align-items:center;
+      transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .related-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 12px 36px rgba(30,30,30,0.12);
+    }
+    .related-card img{
+      width:100%;height:180px;object-fit:cover;border-radius:8px;
+    }
+    .related-card h4{font-size:0.95rem;margin-top:6px;}
+    .related-card .tag{
+      margin-top:6px;padding:6px 10px;border-radius:999px;
+      background:var(--purple);color:white;font-size:0.85rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer{
+      background:var(--dark);color:white;padding:32px 5%;margin-top:30px;
+    }
+    .footer-grid{display:flex;gap:24px;flex-wrap:wrap;max-width:1200px;margin:0 auto;}
+    .footer-col{flex:1;min-width:180px;}
+    .footer-col h4{color:var(--orange);margin-bottom:8px;}
+    .footer-col p,.footer-col a{color:#ddd;font-size:0.95rem;text-decoration:none;display:block;margin-bottom:6px;}
+    .copy{text-align:center;color:#aaa;margin-top:18px;font-size:0.9rem;}
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width:768px){
+      .menu-icon{display:block;}
+      #navLinks{
+        position:fixed;top:60px;right:-300px;width:250px;height:calc(100vh - 60px);
+        background:white;flex-direction:column;padding:16px;
+        box-shadow:-6px 0 30px rgba(0,0,0,0.08);transition:right .28s ease;
+      }
+      #navLinks.show{right:0;}
+      .book-header{flex-direction:column;align-items:center;text-align:center;}
+      .book-cover-box img{max-width:70%;}
+      .book-title{font-size:1.4rem;}
+      .desc-box{max-height:220px;}
+      .action-buttons{justify-content:center;}
+    }
+
+    @media (max-width:480px){
+      .book-cover-box img{max-width:90%;}
+      .btn{min-width:100%;padding:10px 0;font-size:0.9rem;}
+      .related-card img{height:140px;}
+      footer{padding:24px 4%;}
+      .footer-grid{flex-direction:column;}
+      .logo-mark{width:32px;height:32px;font-size:1rem;}
+    }
+
+    /* scrollbar for description */
+    .desc-box::-webkit-scrollbar{width:8px;}
+    .desc-box::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.08);border-radius:8px;}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="navbar">
+    <div class="logo">
+      <div class="logo-mark">E</div>
+      <div>E-Novela</div>
+    </div>
+
+    <nav id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="library.html" class="active">Library</a>
+      <a href="writer.html">Become a Writer</a>
+      <a href="#" class="login-btn">Login / Signup</a>
+    </nav>
+
+    <button class="menu-icon" id="menuBtn">☰</button>
+  </header>
+
+  <!-- BOOK HEADER -->
+  <main>
+    <section class="book-header">
+      <div class="book-cover-box"><img src="https://i.postimg.cc/9fpFZ8Vt/book-cover.jpg" alt="Book cover"></div>
+      <div class="book-details">
+        <h1 class="book-title">The Lost Kingdom</h1>
+        <div class="author">by <strong>John Max</strong></div>
+        <div id="unlockBanner"></div>
+        <div class="details-info">
+          <div class="pill">Fantasy</div>
+          <div class="pill">⭐ 4.8</div>
+          <div class="pill">👁️ 12.4k</div>
+          <div class="pill">❤️ 3.1k</div>
+        </div>
+        <p style="margin-top:16px;color:#555;">A tale of a forgotten prince, ancient prophecies, and a journey to reclaim what was stolen. This novel blends political intrigue with mythic adventure.</p>
+      </div>
+    </section>
+
+    <!-- DESCRIPTION -->
+    <section class="description-section">
+      <h2 style="margin-bottom:10px;">Book Description</h2>
+      <div class="desc-box collapsed" id="descBox">
+        <p>In a world where gods once walked the earth... (placeholder description)</p>
+      </div>
+      <button class="show-more" id="toggleDesc">Show More</button>
+    </section>
+
+    <!-- ACTION BUTTONS -->
+    <section class="action-buttons">
+      <button class="btn btn-start" id="btnStart">Start Reading</button>
+      <button class="btn btn-fav" id="btnFav">Add to Favorites</button>
+      <button class="btn btn-download" id="btnDownload" disabled>Download (Coming Soon)</button>
+    </section>
+
+    <!-- AUTHOR BOX -->
+    <section class="author-section">
+      <h2 style="margin-bottom:12px;">About the Author</h2>
+      <div class="author-card">
+        <div class="author-avatar">JM</div>
+        <div class="author-meta">
+          <h3>John Max</h3>
+          <p>John Max is a storyteller who writes sweeping fantasy sagas with strong characters and moral complexity.</p>
+          <button class="author-btn">View Author Page</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED BOOKS -->
+    <section class="related-section">
+      <h2>Related Books</h2>
+      <div class="related-grid">
+        <div class="related-card">
+          <img src="https://i.postimg.cc/vTYHj7kw/book1.jpg" alt="Dragon Fire">
+          <h4>Dragon Fire</h4><span class="tag">Fantasy</span>
+        </div>
+        <div class="related-card">
+          <img src="https://i.postimg.cc/QNvLkN5n/book2.jpg" alt="Shadow Curse">
+          <h4>Shadow Curse</h4><span class="tag">Magic</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>About</h4>
+        <p>E-Novela connects readers with storytellers. Read, support authors, and discover new worlds.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="library.html">Library</a>
+        <a href="writer.html">Become a Writer</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>Email: info@enovela.com</p>
+      </div>
+    </div>
+    <div class="copy">© <span id="year"></span> E-Novela · All rights reserved</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent=new Date().getFullYear();
+    const menuBtn=document.getElementById('menuBtn');
+    const navLinks=document.getElementById('navLinks');
+    menuBtn.onclick=()=>navLinks.classList.toggle('show');
+    const descBox=document.getElementById('descBox');
+    const toggleDesc=document.getElementById('toggleDesc');
+    toggleDesc.onclick=()=>{
+      descBox.classList.toggle('collapsed');
+      toggleDesc.textContent=descBox.classList.contains('collapsed')?'Show More':'Show Less';
+    };
+
+    // Get book slug from URL or derive from title
+    function getQueryParam(name){const p=new URLSearchParams(location.search);return p.get(name);}
+    function slugify(s){return(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
+    const urlSlug=getQueryParam('book');
+    const bookSlug=urlSlug||slugify(document.querySelector('.book-title').textContent);
+
+    // Start Reading button handler
+    const btnStart=document.getElementById('btnStart');
+    const UNLOCK_KEY='enovela_unlocked';
+    function getUnlocked(){try{return JSON.parse(localStorage.getItem(UNLOCK_KEY)||'[]');}catch(e){return[];}}
+    if(btnStart){
+      btnStart.onclick=()=>{
+        const unlocked=getUnlocked();
+        if(unlocked.includes(bookSlug)){
+          location.href=`reader.html?book=${encodeURIComponent(bookSlug)}`;
+        }else{
+          if(confirm('This book is locked. Return to Library to preview and unlock?')){
+            location.href='library.html';
+          }
+        }
+      };
+    }
+
+    // Favorites button handler
+    const btnFav=document.getElementById('btnFav');
+    const FAV_KEY='enovela_favs';
+    function getFavs(){try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]');}catch(e){return[];}}
+    function toggleFav(slug){const f=getFavs();const i=f.indexOf(slug);if(i>=0){f.splice(i,1);localStorage.setItem(FAV_KEY,JSON.stringify(f));return false;}else{f.push(slug);localStorage.setItem(FAV_KEY,JSON.stringify(f));return true;}}
+    if(btnFav){
+      const isFav=getFavs().includes(bookSlug);
+      if(isFav){btnFav.classList.add('active');btnFav.textContent='💚 Favorited';}
+      btnFav.onclick=()=>{
+        const now=toggleFav(bookSlug);
+        if(now){btnFav.classList.add('active');btnFav.textContent='💚 Favorited';}
+        else{btnFav.classList.remove('active');btnFav.textContent='Add to Favorites';}
+      };
+    }
+  </script>
+</body>
+</html>

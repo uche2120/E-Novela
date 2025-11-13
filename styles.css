@@ -41,3 +41,38 @@
     @media (min-width: 768px){
       .mobile-menu-backdrop, .mobile-menu { display: none !important; }
     }
+
+    /* --- Genre cards / Explore by Genre --- */
+    .genres-section { margin-top: 0.5rem; }
+    .genres-grid { display: flex; gap: 1rem; overflow-x: auto; padding: 0.5rem 0.25rem; }
+    .genre-card {
+      --card-bg: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 160px;
+      padding: 0.85rem 1rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--dark);
+      box-shadow: 0 6px 14px rgba(30,30,30,0.06);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      border: 1px solid rgba(30,30,30,0.04);
+    }
+    .genre-card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 12px 30px rgba(30,30,30,0.12); }
+    .genre-emoji { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; font-size: 18px; background: var(--card-color); color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .genre-name { font-weight: 600; }
+
+    /* Desktop: switch to a grid layout */
+    @media (min-width: 768px){
+      .genres-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; overflow: visible; }
+      .genre-card { min-width: 0; }
+    }
+
+    /* Make horizontal scrolling neat on mobile */
+    .genres-grid::-webkit-scrollbar { height: 8px; }
+    .genres-grid::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 999px; }
+
+    /* small accessibility: focus state */
+    .genre-card:focus { outline: 3px solid rgba(103,58,183,0.12); outline-offset: 2px; }

@@ -117,27 +117,53 @@
       </div>
     </section>
 
-    <!-- TRENDING -->
-    <section id="library" class="max-w-7xl mx-auto px-6 mt-12">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">🔥 Trending Novels</h2>
-        <a href="#library" class="text-sm text-slate-600">See all</a>
-      </div>
-
-      <div id="trendingRow" class="flex gap-4 overflow-x-auto thin-scroll py-2">
-        <!-- cards injected by JS -->
-      </div>
-    </section>
-
-    <!-- RECOMMENDED -->
+    <!-- EXPLORE BY GENRE (replaces Trending & Recommended) -->
     <section class="max-w-7xl mx-auto px-6 mt-12">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">Recommended For You</h2>
-        <p class="text-sm text-slate-500">Based on your favorite genres</p>
+      <div class="text-center">
+        <p class="text-sm text-slate-600">Find the perfect story that matches your mood ❤️🔥😂👻</p>
+        <h2 class="text-2xl font-semibold mt-2" style="padding-top: 2%;">Explore by Genre</h2>
       </div>
 
-      <div id="recommendedGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <!-- injected by JS -->
+      <div class="mt-6 genres-section">
+        <!-- On mobile this will be a horizontal scroller; on desktop it becomes a grid -->
+        <div class="genres-grid thin-scroll">
+
+          <a href="library.html" class="genre-card" style="--card-color: #E53935;">
+            <span class="genre-emoji">⚔️</span>
+            <span class="genre-name">All</span>
+          </a>
+
+
+          <a href="genre.html?category=Love" class="genre-card" style="--card-color: var(--orange);">
+            <span class="genre-emoji">❤️</span>
+            <span class="genre-name">Love Stories</span>
+          </a>
+
+          <a href="genre.html?category=Sad" class="genre-card" style="--card-color: var(--purple);">
+            <span class="genre-emoji">😢</span>
+            <span class="genre-name">Sad Stories</span>
+          </a>
+
+          <a href="genre.html?category=Action" class="genre-card" style="--card-color: #E53935;">
+            <span class="genre-emoji">⚔️</span>
+            <span class="genre-name">Action</span>
+          </a>
+
+          <a href="genre.html?category=Horror" class="genre-card" style="--card-color: var(--dark);">
+            <span class="genre-emoji">👻</span>
+            <span class="genre-name">Horror</span>
+          </a>
+
+          <a href="genre.html?category=Comedy" class="genre-card" style="--card-color: var(--green);">
+            <span class="genre-emoji">😂</span>
+            <span class="genre-name">Comedy</span>
+          </a>
+
+          <a href="genre.html?category=Drama" class="genre-card" style="--card-color: #3F51B5;">
+            <span class="genre-emoji">🎭</span>
+            <span class="genre-name">Drama</span>
+          </a>
+        </div>
       </div>
     </section>
 

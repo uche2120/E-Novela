@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>E-Novela — Genre</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="antialiased">
+
+  <!-- NAV (kept minimal but consistent) -->
+  <header class="fixed w-full z-40 top-0">
+    <div class="max-w-7xl mx-auto px-4">
+      <nav class="flex items-center justify-between py-4 nav-blur rounded-xl card-shadow px-4">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <a href="index.html" class="inline-flex items-center gap-2">
+              <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-tr from-orange-400 to-orange-600 text-white font-bold">E</div>
+              <div class="text-lg font-semibold">E-Novela</div>
+            </a>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="text-sm text-slate-600 hover:text-slate-800">Home</a>
+          <a href="library.html" class="text-sm text-slate-600 hover:text-slate-800">Library</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-28 max-w-7xl mx-auto px-6">
+    <section class="mt-6">
+      <div class="text-center">
+        <p id="tagline" class="text-sm text-slate-600">Find the perfect story that matches your mood ❤️🔥😂👻</p>
+        <h1 id="genreTitle" class="text-3xl font-semibold mt-2">Genre</h1>
+        <p id="sub" class="text-sm text-slate-500 mt-2">Browse stories in this category. Click a book to view details.</p>
+      </div>
+
+      <div class="mt-6">
+        <div id="genreGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <!-- Books will be injected here -->
+        </div>
+        <div id="noResults" class="hidden text-center text-slate-500 mt-6">No books found for this category.</div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER (copied minimal footer for consistency) -->
+  <footer class="bg-[var(--dark)] text-white mt-12">
+    <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-tr from-orange-400 to-orange-600 text-white font-bold">E</div>
+          <div class="text-lg font-semibold">E-Novela</div>
+        </div>
+        <p class="text-sm text-slate-300">A premium reading platform with ad-based unlocks and fair pay for authors.</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-2">Quick Links</h4>
+        <ul class="text-sm text-slate-300 space-y-1">
+          <li><a href="library.html" class="hover:underline">Library</a></li>
+          <li><a href="index.html#become" class="hover:underline">Become a Writer</a></li>
+          <li><a href="#" class="hover:underline">Privacy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-2">About</h4>
+        <p class="text-sm text-slate-300">Our mission is to connect readers with creative storytellers and create a sustainable ecosystem for authors.</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-2">Contact</h4>
+        <p class="text-sm text-slate-300">Email: <a href="mailto:info@enovela.com" class="underline">info@enovela.com</a></p>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 py-4 text-center text-sm text-slate-400">© <span id="yearFooter"></span> E-Novela · All rights reserved</div>
+  </footer>
+
+<script>
+  // Copy of the sample books used on index.html (for client-side demo)
+  const books = [
+    { id: 'b1', title: 'The Last Ember', author: 'A. K. Nwosu', genre: 'Fantasy', views: '1.2M', likes: 12400, cover: 'https://images.unsplash.com/photo-1529336953124-7463b36f9f63?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2f7f4f6e9d2f7b2f733f0a4fd3f5c6b3' },
+    { id: 'b2', title: 'City of Echoes', author: 'M. Adeyemi', genre: 'Sci-Fi', views: '540k', likes: 5400, cover: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f1bd2dd9a4b8b4dffb7c9d265b2b8a2' },
+    { id: 'b3', title: 'Whispers in Rain', author: 'L. Chukwu', genre: 'Romance', views: '220k', likes: 2200, cover: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a24f3f4c2b4b3f7b4a4a2f4f6f2a5b6' },
+    { id: 'b4', title: 'Silent Oath', author: 'R. Ibe', genre: 'Mystery', views: '90k', likes: 900, cover: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b4d4f6f6d4e4c3b4a2a1b0a4d3c2b1' },
+    { id: 'b5', title: 'Starlit Voyage', author: 'E. Okonkwo', genre: 'Adventure', views: '340k', likes: 3200, cover: 'https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6c2d2f6a3e2f4b3a6b5c4d3e2f1a0b9c' },
+    { id: 'b6', title: 'Threads of Fate', author: 'O. Musa', genre: 'Drama', views: '410k', likes: 4100, cover: 'https://images.unsplash.com/photo-1520975914461-3a1a2f2d7d0d?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=4b7c6d5e3f2a1b0c9e8d7c6b5a4c3e2' }
+  ];
+
+  // mapping from query category to the genre keywords present in books array
+  const categoryMap = {
+    'Love': ['Romance'],
+    'Sad': ['Drama','Romance'],
+    'Action': ['Adventure'],
+    'Horror': ['Mystery','Horror'],
+    'Comedy': ['Comedy'],
+    'Drama': ['Drama']
+  };
+
+  function el(id){ return document.getElementById(id); }
+
+  function createGridCard(book){
+    const wrapper = document.createElement('div');
+    wrapper.className = 'bg-white rounded-2xl p-4 card-shadow hover:shadow-xl transition';
+    wrapper.innerHTML = `
+      <div class="flex gap-4">
+        <img class="w-20 h-28 rounded-lg object-cover" src="${book.cover}" alt="${book.title}">
+        <div class="flex-1">
+          <h4 class="font-semibold leading-tight">${book.title}</h4>
+          <div class="text-sm text-slate-500 mt-1">${book.author} • ${book.genre}</div>
+          <div class="mt-3 flex items-center gap-3">
+            <a href="index.html" class="px-3 py-1 rounded-full border text-sm hover:bg-[var(--purple)] hover:text-white transition">View</a>
+            <div class="text-sm text-slate-500">👁️ ${book.views} · ${book.likes} ❤</div>
+          </div>
+        </div>
+      </div>
+    `;
+    return wrapper;
+  }
+
+  function renderGenre(){
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category') || '';
+    const title = category ? `Category: ${category}` : 'All Genres';
+    el('genreTitle').textContent = title;
+
+    const keywords = categoryMap[category] || (category ? [category] : []);
+    const grid = el('genreGrid');
+    grid.innerHTML = '';
+
+    const filtered = (keywords.length === 0) ? books : books.filter(b => keywords.includes(b.genre));
+
+    if(filtered.length === 0){
+      el('noResults').classList.remove('hidden');
+    } else {
+      el('noResults').classList.add('hidden');
+      filtered.forEach(b => grid.appendChild(createGridCard(b)));
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    renderGenre();
+    el('yearFooter').textContent = new Date().getFullYear();
+  });
+</script>
+
+</body>
+</html>
