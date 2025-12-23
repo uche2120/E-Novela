@@ -271,6 +271,14 @@
       display: block;
     }
 
+    /* Author agreement box */
+    .agreement-box{
+      border:1px solid rgba(30,30,30,0.06);
+      background:#fafafa;padding:1rem;border-radius:8px;max-height:280px;overflow:auto;font-size:0.95rem;color:#333;
+    }
+    .agreement-actions{display:flex;align-items:center;gap:0.75rem;margin-top:0.75rem}
+    .agreement-checkbox{width:18px;height:18px}
+
     .form-input.error, .form-textarea.error, .form-select.error {
       border-color: #d32f2f;
     }
@@ -494,8 +502,30 @@
           </div>
 
           <!-- Submit Button -->
+          <!-- Author Agreement -->
+          <div class="form-group">
+            <label class="form-label">E-NOVELA AUTHOR AGREEMENT</label>
+            <div class="agreement-box" id="authorAgreementText">
+              <p><strong>This Author Agreement ("Agreement") is made between <em>E-Novela</em> (the “Platform”) and <em>[Author’s Full Name]</em> ("Author").</strong></p>
+              <hr/>
+              <p><strong>1. Grant of License</strong><br/>The Author grants E-Novela a <em>non-exclusive, worldwide, royalty-free license</em> to publish, display, and distribute the submitted work (“the Novel”) on its website and related platforms. This license allows E-Novela to make the work available for reading, downloading, promotion, and monetization under the terms of this agreement.</p>
+              <p><strong>2. Copyright Ownership</strong><br/>The Author retains <em>full copyright ownership</em> of the Novel. E-Novela does not claim ownership and only holds the rights necessary to host, market, and distribute the content on its platform.</p>
+              <p><strong>3. Exclusivity</strong><br/>This license is <em>non-exclusive</em>, and the Author may publish or distribute the same work elsewhere. If the Author chooses exclusive publishing, separate terms can be agreed upon in writing.</p>
+              <p><strong>4. Royalties & Payment</strong><br/>- Authors set their own pricing per novel.<br/>- E-Novela will deduct <strong>40%</strong> from each sale as a platform fee. Authors receive <strong>60%</strong> of the set price.<br/>- If an Author chooses to offer the book for <em>free reading</em> (stream-only), and a user finishes the book within <strong>3 days</strong>, the Author will receive <strong>points</strong>.<br/>- Points are converted to <strong>coins</strong>, which allow Authors to publish future works <em>without platform deductions</em>, depending on their coin balance.<br/>- Downloading is <em>not free</em> — even if reading access is.</p>
+              <p><strong>5. Author’s Warranty</strong><br/>The Author confirms that:<br/>- The work is <em>original</em> and not copied or plagiarized.<br/>- They own the rights or have permission to publish it.<br/>- The content does <em>not infringe</em> on any third-party rights or laws.<br/>- They are solely responsible for the accuracy and legality of their content.</p>
+              <p><strong>6. Content Removal & Termination</strong><br/>- The Author may request removal of their work at any time with <em>reasonable notice</em>.<br/>- E-Novela reserves the right to remove any content that violates its policies or legal requirements.<br/>- Earnings prior to removal will be processed according to this Agreement.</p>
+              <p><strong>7. Modification of Terms</strong><br/>E-Novela reserves the right to update or amend this Agreement. Authors will be notified of significant changes, and continued use of the platform constitutes acceptance of the new terms.</p>
+              <p><em>By registering on E-Novela as an Author, you agree to the terms above.</em></p>
+            </div>
+            <div class="agreement-actions">
+              <input type="checkbox" id="authorAgreement" name="authorAgreement" class="agreement-checkbox" />
+              <label for="authorAgreement" style="font-size:0.95rem">I Agree</label>
+              <div id="agreementError" class="error-message" style="margin-left:8px"></div>
+            </div>
+          </div>
+
           <button type="submit" class="btn-submit">
-            📤 Submit Application
+            📤 Submit & Continue
           </button>
 
           <p class="text-xs text-slate-500 text-center">
@@ -673,6 +703,12 @@
       },
       message: 'Please enter a valid phone number'
     }
+    ,
+    authorAgreement: {
+      required: true,
+      validate: (value) => value === 'true',
+      message: 'You must agree to the Author Agreement to continue'
+    }
   };
 
   // Clear error message on input
@@ -681,6 +717,11 @@
       clearError(field);
     });
   });
+  // also watch checkbox change
+  const authorAgreementCheckbox = el('authorAgreement');
+  if(authorAgreementCheckbox){
+    authorAgreementCheckbox.addEventListener('change', ()=>{ const err = el('agreementError'); if(err){ err.classList.remove('show'); err.textContent=''; } });
+  }
 
   function clearError(field) {
     const errorDiv = field.parentElement.querySelector('.error-message');
@@ -778,8 +819,17 @@
     e.preventDefault();
 
     // Validate form
+    // Validate form fields
     if (!validateForm()) {
       showToast('Please fix the errors in the form');
+      return;
+    }
+
+    // Validate agreement checkbox specifically
+    const agreementCheckbox = el('authorAgreement');
+    if(!agreementCheckbox || !agreementCheckbox.checked){
+      const agrErr = el('agreementError'); if(agrErr){ agrErr.textContent = 'You must agree to the Author Agreement to continue'; agrErr.classList.add('show'); }
+      showToast('Please accept the Author Agreement to continue');
       return;
     }
 
@@ -790,7 +840,9 @@
       phone: form.querySelector('[name="phone"]').value.trim(),
       bio: form.querySelector('[name="bio"]').value.trim(),
       genre: form.querySelector('[name="genre"]').value,
-      portfolio: portfolioInput.files.length > 0 ? portfolioInput.files[0].name : null
+      portfolio: portfolioInput.files.length > 0 ? portfolioInput.files[0].name : null,
+      authorAgreementAccepted: true,
+      authorAgreementAt: Date.now()
     };
 
     // Simulate form submission
@@ -805,6 +857,8 @@
 
     // Store data (in a real app, you'd send this to a backend)
     localStorage.setItem('writerApplication', JSON.stringify(formData));
+    // store agreement acceptance separately for quick checks
+    try{ localStorage.setItem('enovela_author_agreement', JSON.stringify({ fullName: formData.fullName, email: formData.email, acceptedAt: formData.authorAgreementAt })); }catch(e){}
 
     showToast('Application submitted successfully! 🎉');
 
